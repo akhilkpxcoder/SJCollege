@@ -8,7 +8,7 @@ namespace SJCollege.Models
 {
     public class UserModel
     {
-        [Required(ErrorMessage = "Please Enter your Name")]
+        [Required(ErrorMessage = "Please Enter your Email")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Please Enter your Password")]
         [DataType(DataType.Password)]
