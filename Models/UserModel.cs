@@ -15,8 +15,7 @@ namespace SJCollege.Models
         public string Password { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
-        public string Approval { get; set; }
         public string Batch { get; set; }
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

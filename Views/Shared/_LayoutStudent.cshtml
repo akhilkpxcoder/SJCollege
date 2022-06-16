@@ -25,7 +25,7 @@
                     <li>@Html.ActionLink("Change Password", "ChangePassword", "Student")</li>
                 </ul>
                 <div class="nav navbar-right" style="background-color: transparent">
-                    <h4 style="color: white">Welcome Student </h4>
+                    <h4 style="color: white">Welcome @Session["Name"].ToString() </h4>
                     <a href="@Url.Action("Login","Account")">Log out</a>
                 </div>
             </div>

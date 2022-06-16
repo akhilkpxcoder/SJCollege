@@ -6,12 +6,20 @@ using System.Web.Mvc;
 using RestSharp;
 using static RestSharp.RestClientOptions;
 using SJCollege.Models;
-
+using Newtonsoft.Json;
+using System.Xml.Serialization;
+using System.Xml;
+using System.IO;
+using System.Windows;
 
 namespace SJCollege.Controllers
 {
     public class AccountController : Controller
     {
+        public class ID
+        {
+            public string Id { get; set; }
+        }
         // GET: Account
         public ActionResult Index()
         {
@@ -31,14 +39,41 @@ namespace SJCollege.Controllers
             {
                 Resource = url
             };
-
             requests.AddHeader("Content-Type", "application/json");
-            requests.AddHeader("Accept", "application/xml");
+            requests.AddHeader("Accept", "application/json");
             requests.AddJsonBody(userModel);
             var response = client.Post(requests);
-            string content = response.Content;
+            if (response.IsSuccessful)
+            {
+                var userdata = JsonConvert.DeserializeObject<UserModel>(response.Content);
+                Session["Name"] = userdata.Name;
+                Session["Batch"] = userdata.Batch;
+                Session["ID"] = userdata.Id;
+                if (userdata.Role == "student")
+                {
+                        return RedirectToAction("Index", "Student",true);
+                }
+                else if (userdata.Role == "faculty")
+                {
 
-            return View();
+                    return RedirectToAction("Index", "Faculty",true);
+
+                }
+                else if (userdata.Role == "admin")
+                {
+                    return RedirectToAction("Index", "Admin",true);
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect Email or Password");
+                    return View();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Incorrect Email or Password");
+                return View();
+            }
         }
         public ActionResult Register()
         {
